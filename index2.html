@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Association</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #004d99;
+            color: white;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px;
+            background-color: #0066cc;
+            border-radius: 5px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .filter {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .profiles,
+        .achievements,
+        .events {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .profile-card,
+        .achievement-card,
+        .event-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 150px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .profile-card img,
+        .achievement-card img,
+        .event-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .profile-card h3,
+        .achievement-card h3,
+        .event-card h3 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .event-card img {
+            border-radius: 10px;
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .profile-form,
+        .event-details,
+        .feedback-section,
+        .achievement-details {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .profile-form img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .profile-details {
+            margin-top: 10px;
+        }
+
+        .profile-details h2 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .profile-details p {
+            font-size: 16px;
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .message-box {
+            margin-top: 15px;
+        }
+
+        .message-box textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="Alumni Association Logo">
+        </div>
+        <nav class="nav">
+            <span class="nav-item" onclick="showSection('masters')">Masters</span>
+            <span class="nav-item" onclick="showSection('jobs')">Job</span>
+            <span class="nav-item" onclick="showSection('events')">Events</span>
+            <span class="nav-item" onclick="showSection('mentorship')">Mentorship</span>
+            <span class="nav-item" onclick="showSection('feedback')">Feedback</span>
+            <span class="nav-item" onclick="showSection('career')">Career Options</span>
+            <span class="nav-item" onclick="showSection('achievements')">Alumni Achievements</span>
+            <span class="nav-item" onclick="showSection('resume')">Resume Templates</span>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Masters Section -->
+        <div id="masters-section" class="section">
+            <h1>Masters Section</h1>
+            <div class="filter">
+                <label>Course you want to study</label>
+                <select id="masters-course" onchange="populateSubOptions('masters')">
+                    <option value="">Select Course</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Medicine">Medicine</option>
+                    <option value="Business">Business</option>
+                </select>
+
+                <select id="masters-subcourse" onchange="populateSubSubOptions('masters')">
+                    <option value="">Select Sub-category</option>
+                </select>
+
+                <select id="masters-specialization">
+                    <option value="">Select Specialization</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Job Section -->
+        <div id="jobs-section" class="section" style="display: none;">
+            <h1>Job Section</h1>
+            <div class="filter">
+                <label>Course you studied</label>
+                <select id="jobs-course" onchange="populateSubOptions('jobs')">
+                    <option value="">Select Course</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Medicine">Medicine</option>
+                    <option value="Business">Business</option>
+                </select>
+
+                <select id="jobs-subcourse" onchange="populateSubSubOptions('jobs')">
+                    <option value="">Select Sub-category</option>
+                </select>
+
+                <select id="jobs-specialization" onchange="showProfiles()">
+                    <option value="">Select Specialization</option>
+                </select>
+            </div>
+            <div id="profiles-container" class="profiles">
+                <!-- Profile cards will be inserted here dynamically -->
+            </div>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events-section" class="section" style="display: none;">
+            <h1>Events</h1>
+            <div class="events">
+                <div class="event-card" onclick="showEventDetails('Graduation', 'Celebrate the achievements of our students as they complete their studies. Join us for a memorable day.')">
+                    <img src="graduation.jpg" alt="Graduation">
+                    <h3>Graduation <br> 5 September, 2024</h3>
+                </div>
+                <div class="event-card" onclick="showEventDetails('Homecoming', 'Reconnect with your peers at our annual alumni meet-up. A great opportunity to network and reminisce.')">
+                    <img src="homecoming.jpg" alt="Homecoming">
+                    <h3>Homecoming <br> 21 October, 2024</h3>
+                </div>
+                <div class="event-card" onclick="showEventDetails('Webinars', 'Join our online webinars to learn from experts in various fields. A great way to keep learning.')">
+                    <img src="webinar.jpg" alt="Webinars">
+                    <h3>Webinars! <br> 27 December, 2024</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mentorship Section -->
+        <div id="mentorship-section" class="section" style="display: none;">
+            <h1>Mentorship</h1>
+            <p>Connect with experienced alumni for guidance in your career and studies.</p>
+        </div>
+
+        <!-- Feedback Section -->
+        <div id="feedback-section" class="section feedback-section" style="display: none;">
+            <h1>Feedback</h1>
+            <div class="feedback-comments">
+                <p>John Doe: "Great platform for staying connected!"</p>
+                <p>Jane Smith: "I love the mentorship program, very helpful."</p>
+                <p>Michael Lee: "Would love more career resources!"</p>
+            </div>
+            <div class="message-box">
+                <textarea placeholder="Leave your feedback..."></textarea>
+            </div>
+        </div>
+
+        <!-- Alumni Achievements Section -->
+        <div id="achievements-section" class="section" style="display: none;">
+            <h1>Alumni Achievements</h1>
+            <div class="achievements">
+                <div class="achievement-card" onclick="showAchievementDetails('Published Research', 'This research paper explores the latest advancements in AI technology.')">
+                    <img src="alumni1.jpg" alt="Alumni Achievement">
+                    <h3>Published Research</h3>
+                </div>
+                <div class="achievement-card" onclick="showAchievementDetails('Passed Competitive Exam', 'Successfully cleared the competitive exam with top scores.')">
+                    <img src="alumni2.jpg" alt="Alumni Achievement">
+                    <h3>Passed Competitive Exam</h3>
+                </div>
+                <div class="achievement-card" onclick="showAchievementDetails('Business Article', 'Article discussing the future trends in the business world.')">
+                    <img src="alumni3.jpg" alt="Alumni Achievement">
+                    <h3>Business Article</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div id="profile-form" class="profile-form">
+            <img id="profile-picture" src="" alt="Profile Picture">
+            <div class="profile-details">
+                <h2 id="profile-name">John Doe</h2>
+                <p id="profile-bio">Bio: Alumni of Computer Science, specialized in AI/ML.</p>
+                <p id="profile-university">Studied at: XYZ University</p>
+                <p id="profile-company">Currently working at: ABC Corp.</p>
+            </div>
+            <div class="message-box">
+                <textarea placeholder="Leave a message..."></textarea>
+            </div>
+        </div>
+
+        <!-- Event Details -->
+        <div id="event-details" class="event-details">
+            <h2 id="event-name"></h2>
+            <p id="event-description"></p>
+        </div>
+
+        <!-- Achievement Details -->
+        <div id="achievement-details" class="achievement-details">
+            <h2 id="achievement-title"></h2>
+            <p id="achievement-description"></p>
+            <div class="message-box">
+                <textarea placeholder="Leave your appreciation..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code for handling different sections
+        function showSection(section) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(sec => sec.style.display = 'none');
+            document.getElementById(`${section}-section`).style.display = 'block';
+        }
+
+        function populateSubOptions(section) {
+            // Function to populate sub-options based on course selection
+            const courseSelect = document.getElementById(`${section}-course`);
+            const subcourseSelect = document.getElementById(`${section}-subcourse`);
+            const selectedCourse = courseSelect.value;
+
+            subcourseSelect.innerHTML = '<option value="">Select Sub-category</option>';
+
+            if (selectedCourse === 'Engineering') {
+                ['Computer Science', 'Mechanical', 'Civil'].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcourseSelect.appendChild(option);
+                });
+            } else if (selectedCourse === 'Medicine') {
+                ['Opthamology', 'Neurology', 'Cardio Thoracic Surgery'].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcourseSelect.appendChild(option);
+                });
+            } else if (selectedCourse === 'Business') {
+                ['General', 'Finance', 'Entrepreneurship'].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcourseSelect.appendChild(option);
+                });
+            }
+        }
+
+        function populateSubSubOptions(section) {
+            // Function to populate specializations based on sub-option selection
+            const subcourseSelect = document.getElementById(`${section}-subcourse`);
+            const specializationSelect = document.getElementById(`${section}-specialization`);
+            const selectedSubCourse = subcourseSelect.value;
+
+            specializationSelect.innerHTML = '<option value="">Select Specialization</option>';
+
+            if (selectedSubCourse === 'Computer Science') {
+                ['Core', 'Cyber Security', 'AIML', 'Data Science'].forEach(spec => {
+                    const option = document.createElement('option');
+                    option.value = spec;
+                    option.textContent = spec;
+                    specializationSelect.appendChild(option);
+                });
+            }
+        }
+
+        function showProfiles() {
+            // Function to display profiles based on specialization
+            const profilesContainer = document.getElementById('profiles-container');
+            profilesContainer.innerHTML = ''; // Clear existing profiles
+
+            // Sample profiles
+            const profiles = [
+                { img: 'alumni1.jpg', name: 'John Doe' },
+                { img: 'alumni2.jpg', name: 'Jane Smith' },
+                { img: 'alumni3.jpg', name: 'Michael Lee' }
+            ];
+
+            profiles.forEach((profile, index) => {
+                const profileCard = document.createElement('div');
+                profileCard.className = 'profile-card';
+                profileCard.onclick = () => showProfileForm(index);
+
+                const profileImage = document.createElement('img');
+                profileImage.src = profile.img;
+                profileCard.appendChild(profileImage);
+
+                const profileName = document.createElement('h3');
+                profileName.textContent = profile.name;
+                profileCard.appendChild(profileName);
+
+                profilesContainer.appendChild(profileCard);
+            });
+        }
+
+        function showProfileForm(index) {
+            // Function to show detailed profile information
+            const profiles = [
+                { img: 'alumni1.jpg', name: 'John Doe', bio: 'Alumni of Computer Science, specialized in AI/ML.', university: 'XYZ University', company: 'ABC Corp.' },
+                { img: 'alumni2.jpg', name: 'Jane Smith', bio: 'Graduated in Business Administration.', university: 'XYZ University', company: 'Global Finance Inc.' },
+                { img: 'alumni3.jpg', name: 'Michael Lee', bio: 'Engineering graduate with a focus on Cyber Security.', university: 'XYZ University', company: 'SecureTech.' }
+            ];
+
+            const profile = profiles[index];
+            document.getElementById('profile-picture').src = profile.img;
+            document.getElementById('profile-name').textContent = profile.name;
+            document.getElementById('profile-bio').textContent = `Bio: ${profile.bio}`;
+            document.getElementById('profile-university').textContent = `Studied at: ${profile.university}`;
+            document.getElementById('profile-company').textContent = `Currently working at: ${profile.company}`;
+
+            document.getElementById('profile-form').style.display = 'block';
+        }
+
+        function showEventDetails(name, description) {
+            // Function to show event details
+            document.getElementById('event-name').textContent = name;
+            document.getElementById('event-description').textContent = description;
+
+            document.getElementById('event-details').style.display = 'block';
+        }
+
+        function showAchievementDetails(title, description) {
+            // Function to show achievement details
+            document.getElementById('achievement-title').textContent = title;
+            document.getElementById('achievement-description').textContent = description;
+
+            document.getElementById('achievement-details').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
